@@ -12,35 +12,38 @@ https://github.com/tomwat/website.git <br>
 </p>
 
 <p>
-tomwat@mydev:~/Skills/website <br>
+// cd to where your files are - /home/tomwat/skills/website <br>
+$ git init <br>
+// Initialized empty Git repository in /home/tomwat/skills/website/.git/ <br>
+<br>
+$ git add --all <br>
+$ git commit -m "initial commit - Dec 14 2018" <br>
+<br>
+// now my local repository is up to date <br>
+// how to push to remote github? <br>
+// create the remote repository on github.com - tomwat/website <br>
+<br>
+// back on workstaion <br>
+$ git remote add origin https://github.com/tomwat/website.git <br>
+$ git push -u origin master <br>
+ <br>
+// verify files are now replicated on remote github <br>
+// other commands.... <br>
 // show my untracked files and uncomitted files in my local git repo <br> 
 $ git status <br>
 // add all my newly created artifacts to my local repo <br>
-$ git add -all <br>
+$ git add file <br>
 // commit all my recent work with message <br>
 $ git commit -m "Dec 14 2018 - large commit" <br>
-$ git status 
+$ git status <br>
 <br>
 </p>
 <p>
-Now that my local Git is all caught up, I want to replicate to my Web Git. <br>
-At github.com, I have created a new repository called tomwat/website. <br>
-This is the URL --> https://github.com/tomwat/website.git <br>
-<br>
-//from this directory <br>
-tomwat@mydev:~/Skills/website <br>
-$ git remote add origin https://github.com/tomwat/website.git <br>
-$ git push -u origin master <br>
-//from now on, I replicate this way <br>
-
+<img src="../images/git1-1.png" alt="Git add" width="800" height="600"> <br>
+<img src="../images/git1-2.png" alt="Git commit" width="800" height="600"> <br>
+<img src="../images/git1-3.png" alt="Git push to remote" width="800" height="600"> <br>
+<img src="../images/git1-4.png" alt="Git remote contents" width="800" height="600"> <br>
 </p>
-
-</p>
-<img src="../images/git1-1.png" alt="Git status" width="800" height="600"> <br>
-<img src="../images/git1-2.png" alt="Git add" width="800" height="600"> <br>
-<img src="../images/git1-3.png" alt="Git commit" width="800" height="600"> <br>
-<img src="../images/git1-4.png" alt="Git push" width="800" height="600"> <br>
-<p>
 
 </body>
 </html>
