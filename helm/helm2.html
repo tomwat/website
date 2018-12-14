@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Helm - package manager for Kubernetes</h1>
+
+<p>Helm packages up all the complex stuff.</p>
+
+<p>
+http://tech.paulcz.net/blog/getting-started-with-helm <br>
+ 
+Writing a Helm Chart is easier when you start with an existing set of Kubernetes manifests.  <br>
+0ne of the easiest ways to get a basic working manifest is to ask Kubernetes to run something <br> 
+and then fetch the manifest. <br>
+</p>
+<p>
+$ cd helm-skills <br>
+$ mkdir manifests <br>
+$ docker login mycluster.icp:8500 <br>
+$ docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
+$ docker push mycluster.icp:8500/skills/tomwatres:latest <br>
+
+$ kubectl run tomwatres --image=mycluster.icp:8500/skills/tomwatres:latest -o yaml > manifests/deployment.yaml <br>
+$ kubectl get pods --selector="run=tomwatres" --output=wide <br>
+$ kubectl expose deployment tomwatres --port=80 --type=NodePort -o yaml > manifests/service.yaml <br>
+$ curl http://<ip of worker node>:<nodePort> <br> 
+//or paste url in browser 
+</p>
+<p>
+Note - I am deploying this to namespace=skills.  Namespace must have sufficient "Pod Security Policy" defined.  Also, <br>
+to push images to ICP, you must have a "Image Publish Policy"....see ICP Namespaces and ICP Images on this site. 
+</p>
+
+<img src="../images/helm2.png" alt="Helm Skills Deployment" width="800" height="600">
+
+<p>
+// cleanup
+$ helm del --purge tomwatres
+</p>
+
+<p>
+Next step - create the helm chart to deploy skills deployment!
+</p>
+
+</body>
+</html>

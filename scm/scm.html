@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Git and SCM - Source Code Management</h1>
+
+<p>Any CI/CD starts with SCM.</p>
+
+<p>
+git takes snapshots of your evolving content <br>
+each commit is represented by a hash <br>
+
+one time commands <br>
+tomwat@mydev:~/resume/website$ git config --global user.email "tyashoj@gmail.com" <br>
+tomwat@mydev:~/resume/website$ git config --global user.name "Thomas Watson" <br>
+
+initialize my website folder (my content) with git <br>
+creates a .git directory...a git repository <br>
+tell git which files to track <br>
+commit saves the work <br>
+
+tomwat@mydev:~/resume/website$ git init <br>
+Initialized empty Git repository in /home/tomwat/resume/website/.git/ <br>
+tomwat@mydev:~/resume/website$ ls -la <br>
+total 20 <br>
+drwxrwxr-x 4 tomwat tomwat 4096 Dec 12 07:56 . <br>
+drwxrwxr-x 5 tomwat tomwat 4096 Dec 12 07:52 .. <br>
+drwxrwxr-x 7 tomwat tomwat 4096 Dec 12 07:56 .git <br>
+drwxrwxr-x 2 tomwat tomwat 4096 Dec 12 00:00 images <br>
+-rw-rw-r-- 1 tomwat tomwat  535 Dec 12 00:11 index.html <br>
+
+</p>
+
+<img src="../images/git1.png" alt="git1.png" width="400" height="400">
+
+</body>
+</html>

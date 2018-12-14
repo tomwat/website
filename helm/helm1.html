@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Helm - package manager for Kubernetes</h1>
+
+<p>Helm packages up all the complex syntax.</p>
+
+<p>
+http://tech.paulcz.net/blog/getting-started-with-helm <br>
+ 
+Writing a Helm Chart is easier when you start with an existing set of Kubernetes manifests.  <br>
+One of the easiest ways to get a basic working manifest is to ask Kubernetes to run something <br> 
+and then fetch the manifest. <br>
+<br>
+$ mkdir manifests <br>
+$ kubectl run example --image=nginx:1.13.5-alpine -o yaml > manifests/deployment.yaml <br>
+    
+$ kubectl expose deployment example --port=80 --type=NodePort -o yaml > manifests/service.yaml <br>
+</p>
+<p>
+Note - default-image-policy must allow image uploads from docker.io/*
+</p>
+<p>
+Note - this worked with namespace=default but not namespace=tomwatres
+</p>
+
+<img src="../images/helm1.png" alt="Helm Example" width="800" height="600">
+
+</body>
+</html>

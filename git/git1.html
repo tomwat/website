@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Git - my source code manager</h1>
+
+<p>
+I have Git locally on my workstation, where I develop my website. <br>
+I also have my local Git linked to http://github.com where my Kuberenetes can access it.  <br>
+As I make changes to my website, I will push those to my repository: <br>
+https://github.com/tomwat/website.git <br>
+</p>
+
+<p>
+tomwat@mydev:~/Skills/website <br>
+// show my untracked files and uncomitted files in my local git repo <br> 
+$ git status <br>
+// add all my newly created artifacts to my local repo <br>
+$ git add -all <br>
+// commit all my recent work with message <br>
+$ git commit -m "Dec 14 2018 - large commit" <br>
+$ git status 
+<br>
+</p>
+<p>
+Now that my local Git is all caught up, I want to replicate to my Web Git. <br>
+At github.com, I have created a new repository called tomwat/website. <br>
+This is the URL --> https://github.com/tomwat/website.git <br>
+<br>
+//from this directory <br>
+tomwat@mydev:~/Skills/website <br>
+$ git remote add origin https://github.com/tomwat/website.git <br>
+$ git push -u origin master <br>
+//from now on, I replicate this way <br>
+
+</p>
+
+</p>
+<img src="../images/git1-1.png" alt="Git status" width="800" height="600"> <br>
+<img src="../images/git1-2.png" alt="Git add" width="800" height="600"> <br>
+<img src="../images/git1-3.png" alt="Git commit" width="800" height="600"> <br>
+<img src="../images/git1-4.png" alt="Git push" width="800" height="600"> <br>
+<p>
+
+</body>
+</html>

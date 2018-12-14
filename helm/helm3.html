@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Helm - create the Helm chart for the MySkills deployment</h1>
+
+<p>The previous steps were to generate test our app on Kubernetes and generate manifests for Helm.
+</p>
+
+<p>
+http://tech.paulcz.net/blog/getting-started-with-helm <br>
+ 
+// if the previous deployment was not removed <br>
+$ helm del --purge tomwatres
+<br>
+// if you need to refresh the image before deployment <br>
+$ docker login mycluster.icp:8500 <br>
+$ docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
+$ docker push mycluster.icp:8500/skills/tomwatres:latest <br>
+<br>
+// create helm scaffolding <br>
+$ cd helm-skills <br>
+$ helm create skills <br>
+$ tree skills <br>
+<br>
+// copy over the manifest files <br>
+$ cp manifests/* helm/templates/ <br>
+$ rm skills/templates/ingress.yaml <br>
+$ rm skills/templates/NOTES.txt <br>
+$ helm version <br>
+// must see both client and server (tiller) versions...if you see "Cant connect to Tiller", see Notes <br>
+// install our Helm chart to Kubernetes (ICP) <br>
+$ helm install -n tomwatres skills <br>
+</p>
+<p>
+Note - Cant connect to Tiller has something to do with Service Account...I removed Tiller and "helm init", <br>
+this seems to fix it...until I can figure out Service Account....see images below. <br>
+</p>
+
+</p>
+<img src="../images/helm3-1.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/helm3-2.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<p>
+
+</body>
+</html>

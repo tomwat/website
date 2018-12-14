@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Docker - build my website using Nginx and latest content</h1>
+
+<p>I am running Docker locally on my dev workstation.</p>
+
+<p>
+cd tomwat@mydev:~/resume (where Dockerfile resides) <br>
+docker build -t tomwatres . <br>
+docker run --rm -it -p 8080:80 tomwatres <br>
+http://localhost:8080 in Firefox <br>
+</p>
+
+
+<img src="../images/docker1.png" alt="docker1.png" width="400" height="400">
+
+</body>
+</html>
