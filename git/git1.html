@@ -10,22 +10,25 @@ I also have my local Git linked to http://github.com where my Kuberenetes can ac
 As I make changes to my website, I will push those to my repository: <br>
 https://github.com/tomwat/website.git <br>
 </p>
-
 <p>
-// cd to where your files are - /home/tomwat/skills/website <br>
+One time setup: <br>
+$ cd /home/tomwat/skills/myskills/website <br>
 $ git init <br>
-// Initialized empty Git repository in /home/tomwat/skills/website/.git/ <br>
+  Initialized empty Git repository in /home/tomwat/skills/myskills/website/.git/ <br>
+create the remote repository on github.com - tomwat/website <br>
 <br>
-$ git add --all <br>
-$ git commit -m "initial commit - Dec 14 2018" <br>
-<br>
-// now my local repository is up to date <br>
-// how to push to remote github? <br>
-// create the remote repository on github.com - tomwat/website <br>
-<br>
-// back on workstaion <br>
+back on workstaion <br>
 $ git remote add origin https://github.com/tomwat/website.git <br>
 $ git push -u origin master <br>
+</p>
+
+<p>
+cd to where your files are - /home/tomwat/skills/myskills/website <br>
+$ git add .
+$ git commit -m "initial commit - Dec 14 2018" <br>
+<br>
+ now my local repository is up to date <br>
+$ git push origin master
  <br>
 // verify files are now replicated on remote github <br>
 // other commands.... <br>
@@ -42,6 +45,7 @@ $ git push -u origin master <br>
 <br>
 </p>
 <p>
+<img src="../images/git1-0.png" alt="Git reference" width="800" height="600"> <br>
 <img src="../images/git1-1.png" alt="Git add" width="800" height="600"> <br>
 <img src="../images/git1-2.png" alt="Git commit" width="800" height="600"> <br>
 <img src="../images/git1-3.png" alt="Git push to remote" width="800" height="600"> <br>
