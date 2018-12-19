@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Build Job that detects changes in github, and builds new website docker image.</h1>
+
+<p>
+Jenkins tutorial on YouTube - Espisode 8 - Integration with Git: <br>
+https://www.youtube.com/watch?v=bGqS0f4Utn4&list=PLhW3qG5bs-L_ZCOA4zNPSoGbnVQ-rp_dG&index=8 <br>
+</p>
+<p>
+Create a FreeStyle project called "MySkills" <br>
+Build - select Execute Shell <br>
+Source Code Management - Enable Git for SCM, and enter the URL of my github repository <br>
+(apparently credentials are not required) <br>
+Build Triggers - Poll SCM every 15 minutes for now <br>
+Create logic to extract files from github and build new image - screen shot below <br>
+</p>
+Test the Jenkins Pipeline <br>
+Create new artifact on local Git repo, and commit. <br>
+Push local git to github <br>
+Validate by running "docker images" to see if new image is created <br>
+<p>
+
+</p>
+<img src="../images/jenkins2-1.png" alt="jenkins 1-1" width="800" height="600"> <br>
+<img src="../images/jenkins2-2.png" alt="jenkins 1-2" width="800" height="600"> <br>
+<img src="../images/jenkins2-3.png" alt="jenkins 1-3" width="800" height="600"> <br>
+<img src="../images/jenkins2-4.png" alt="jenkins 1-4" width="800" height="600"> <br>
+<p>
+
+</body>
+</html>

@@ -16,32 +16,20 @@ The Jekinsfile will perform these 4 stages of build process: <br>
 (iv) Perform an upgrade of the Helm chart.  <br>
 </p>
 <p>
-// download the Jenkins helm chart <br>
-$ helm fetch stable/jenkins <br>
-$ tar xzvf jenkins-0.25.0.tgz  <br>
-
-// create helm scaffolding <br>
-$ cd helm-skills <br>
-$ helm create skills <br>
-$ tree skills <br>
-<br>
-// copy over the manifest files <br>
-$ cp manifests/* helm/templates/ <br>
-$ rm skills/templates/ingress.yaml <br>
-$ rm skills/templates/NOTES.txt <br>
-$ helm version <br>
-// must see both client and server (tiller) versions...if you see "Cant connect to Tiller", see Notes <br>
-// install our Helm chart to Kubernetes (ICP) <br>
-$ helm install -n tomwatres skills <br>
+Jenkins tutorial on YouTube: <br>
+https://www.youtube.com/watch?v=89yWXXIOisk&list=PLhW3qG5bs-L_ZCOA4zNPSoGbnVQ-rp_dG&index=1 <br>
 </p>
 <p>
-Note - Cant connect to Tiller has something to do with Service Account...I removed Tiller and "helm init", <br>
-this seems to fix it...until I can figure out Service Account....see images below. <br>
+I have installed Jenkins as Jar file on my Developers Laptop. <br>
+$ cd /home/tomwat/skills/jenkins <br>
+$ java -jar jenkins.war --httpPort=8081 <br>
+http://localhost:8081
+Go to "Manage Jenkins" and Install Suggested Plugins. <br>
 </p>
 
-</p>
-<img src="../images/helm3-1.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
-<img src="../images/helm3-2.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/jenkins1-1.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/jenkins1-2.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/jenkins1-3.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
 <p>
 
 </body>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Kubernetes on IBM Cloud - Initial Setup
+
+<p>
+This is Kubernetes PaaS on IBM Cloud Public <br>
+Kubernetes IaaS - Soft Layer VM is another offering on IBM Cloud Public
+</p>
+
+<p>
+http://bluemix.net <br>
+<br>
+I selected Single Node, 4 vcpu, 16gb RAM ... Approx $227.00 per month<br>
+<br>
+To work with the cluster you need the "ibmcloud" CLI <br>
+This is a good place to go: <br>
+https://console.bluemix.net/docs/cli/index.html#overview <br>
+<br>
+This command: <br> 
+$ curl -sL https://ibm.biz/idt-installer | bash <br>
+will download "ibmcloud" CLI and other useful tools - kubectl, helm, etc. <br>
+<br>
+Once you have kubectl, you can validate your cluster is ready: <br>
+$ kubectl get nodes <br>
+    NAME            STATUS   ROLES    AGE   VERSION <br>
+    10.187.128.46   Ready    <none>   2h    v1.10.11+IKS <br>
+<br>
+<p>
+<p>
+Gaining access to your cluster: <br>
+$ ibmcloud login -a https://api.ng.bluemix.net <br>
+$ ibmcloud cs region-set us-south <br>
+$ ibmcloud cs cluster-config tomwat-cluster <br>
+$ export KUBECONFIG=/home/tomwat/.bluemix/plugins/container-service/clusters/tomwat-cluster/kube-config-dal13-tomwat-cluster.yml <br>
+$ kubectl get nodes <br>
+</p>
+<p>
+To deploy applications to IBM Kubernetes Service (IKS) you need to create a registry <br>
+Follow this tutorial: <br>
+https://console.bluemix.net/containers-kubernetes/registry/main/start <br>
+</p>
+<p>
+Kubernetes dashboard setup.  You have 2 options.  1) within IBM Cloud, there is a button for the dashboard. <br>
+<br>
+2) Kubernetes dashboard remote access: <br>
+https://8gwifi.org/docs/kube-dash.jsp <br>
+Note - the dashboard and dashboard service are already deployed as part of the base IBM K8S service.  You need to run the clusterrolebinding YAML to gain access via the service account. <br>
+$ kubectl create -f dashboard-admin.yaml
+</p>
+<p>
+Then you start the proxy: <br>
+$ kubectl proxy
+When confronted with Authentication screen, select "Skip". <br>
+<br>
+If you want to configure token, again look here: <br>
+https://8gwifi.org/docs/kube-dash.jsp 
+</p>
+<p>
+<img src="../images/kubernetes1-1.png" alt="setup 1-1" width="800" height="600">
+<img src="../images/kubernetes1-2.png" alt="setup 1-2" width="800" height="600">
+<img src="../images/kubernetes1-3.png" alt="setup 1-3" width="800" height="600">
+<img src="../images/kubernetes1-4.png" alt="setup 1-4" width="800" height="600">
+<img src="../images/kubernetes1-5.png" alt="setup 1-5" width="800" height="600">
+<img src="../images/kubernetes1-6.png" alt="setup 1-6" width="800" height="600">
+<img src="../images/kubernetes1-7.png" alt="setup 1-7" width="800" height="600">
+</p>
+</body>
+</html>
