@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Kubernetes on IBM Cloud - Setup Regisry</h1>
+
+<p>
+https://console.bluemix.net/containers-kubernetes/registry/main/start
+</p>
+
+<p>
+Create a new namespace in the registry. <br>
+$ ibmcloud cr namespace-add myskills <br>
+</p>
+<p>
+Log your local Docker daemon into the IBM Cloud Container Registry <br>
+$ ibmcloud cr login <br>
+Pull a test image <br>
+$ docker pull hello-world <br>
+Tag the image as appropriate for IBM Cloud Container Registry <br>
+$ docker tag hello-world registry.ng.bluemix.net/<my_namespace>/<my_repository>:<my_tag> <br>
+Push the image to IBM Cloud CR <br>
+$ docker push registry.ng.bluemix.net/<my_namespace>/<my_repository>:<my_tag> <br>
+Verify the image was transferred <br.
+$ ibmcloud cr image-list
+</p>
+
+<p>
+<img src="../images/kubernetes2-1.png" alt="kubernetes 2-1" width="800" height="600">
+<img src="../images/kubernetes2-2.png" alt="kubernetes 2-2" width="800" height="600">
+<img src="../images/kubernetes2-3.png" alt="kubernetes 2-3" width="800" height="600">
+<img src="../images/kubernetes2-4.png" alt="kubernetes 2-4" width="800" height="600">
+<img src="../images/kubernetes2-5.png" alt="kubernetes 2-5" width="800" height="600">
+</p>
+</body>
+</html>
