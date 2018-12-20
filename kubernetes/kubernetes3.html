@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Configure Image push automation between Jenkins and IKS - Kubernetes on IBM Cloud </h1>
+
+<p>
+https://console.bluemix.net/docs/services/Registry/registry_tokens.html#registry_access <br>
+https://console.bluemix.net/docs/services/Registry/registry_tokens.html#registry_tokens_create <br>
+<br>
+For my automated web site deployment using Jenkins, I need to be able to deploy new images via Jenkins.  This is an automated process and I will not be around to supply credentials.  IBM Container Registry can be configured to allow automation via Jenkins CLI.  There is an API option and a Token option.  We are going with Token.
+</p>
+
+<p>
+One time action: <br>
+(must be logged into IBM CLoud) ,br>
+$ ibmcloud cr token-add --description "Automation token" --non-expiring --readwrite
+$ ibmcloud cr token-list
+TOKEN ID                               READONLY   EXPIRY   DESCRIPTION <br>  
+34781132-2bb7-5170-ab35-19d406fca984   false      0        Automation token <br>
+$ ibmcloud cr token-get 34781132-2bb7-5170-ab35-19d406fca984 <br>
+Token identifier   34781132-2bb7-5170-ab35-19d406fca984   <br>
+Token              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzND... <br>
+<br>
+This is the CLI command that Jenkins build will use to login to IBM Cloud Container Registry:<br>
+docker login -u token -p eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzND... <br>
+<br>
+Once logged in, Jenkins can now push the new image to IBM: <br> 
+docker push registry.ng.bluemix.net/myskills/tomwatres:latest
+</p>
+
+<p>
+Next step in automation would be to configure Jenkins to create a new Kubernetes deployment that uses the just pushed image 
+</p>
+
+<p>
+<img src="/images/kubernetes3-1.png" alt="kubernetes 3-1" width="800" height="600">
+<img src="/images/kubernetes3-2.png" alt="kubernetes 3-2" width="800" height="600">
+<img src="/images/kubernetes3-3.png" alt="kubernetes 3-3" width="800" height="600">
+<img src="/images/kubernetes3-4.png" alt="kubernetes 3-4" width="800" height="600">
+</p>
+</body>
+</html>

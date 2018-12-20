@@ -5,13 +5,21 @@
 <h1>Docker Cheat Shee1>
 
 <p>
-//attach to a running docker container.
+attach to a running docker container <br>
 Use docker ps to get the name of the existing container <br>
 $ docker exec -it <container name> /bin/sh to get a bourne shell in the container. <br>
 </p>
 
 <p>
+<p>
+cleanup old docker images, labeled as "none"
+$ docker images | grep none
+$ docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')
+</p>
+
+<p>
 <img src="../images/Docker1-1.png" alt="docker cheat 1-1" width="800" height="600">
+<img src="../images/Docker1-2.png" alt="docker cheat 1-2" width="800" height="600">
 </p>
 </body>
 </html>
