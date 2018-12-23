@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Helm - package manager for Kubernetes</h1>
+
+<p>Helm packages up all the complex syntax.</p>
+
+<p>
+Install Helm client on Ubuntu - instructions on Internet <br>
+$ helm version <br>
+  Error: could not find tiller <br>
+<br>
+At this point, you have Helm client installed, but not Helm server..aka, Tiller <br>
+$ helm init <br>
+Is the command that will install Tiller on Kubernetes - see screen shot <br>
+Confirm with: <br>
+$ kubectl get pods -n kube-system | grep tiller <br>
+and <br>
+$ helm version <br>
+Will now show both a client and a server version 
+</p>
+
+<img src="../images/helm0-1.png" alt="Helm Tiller install" width="800" height="600">
+
+</body>
+</html>

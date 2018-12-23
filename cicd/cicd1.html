@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>MySkills website - the entire flow</h1>
+
+<p>
+High Level: <br>
+1. On my Developer workstation, I make a change to my website <br>
+2. I test the change locally on my workstation <br>
+3. I commit the change to my local git repo <br>
+4. I push the change to my remote repo - github.com <br>
+5. Jenkins is configured to listen for changes in my github repository <br>
+6. Jenkins initiates a build process - see below <br>
+7. At the end of the build process, a new website has been deployed to IBM Cloud
+</p>
+<p>
+The build process: <br>
+
+The Jekinsfile will perform these 4 stages of build process: <br>
+(i)  Build the Docker image when code is committed to GitHub. <br>
+(ii) Push the Docker image to the IBM Cloud Private Container registry. <br>
+(iii)Perform unit testing with container structure test framework. <br>
+(iv) Perform an upgrade of the Helm chart.  <br>
+</p>
+<p>
+Jenkins tutorial on YouTube: <br>
+https://www.youtube.com/watch?v=89yWXXIOisk&list=PLhW3qG5bs-L_ZCOA4zNPSoGbnVQ-rp_dG&index=1 <br>
+</p>
+<p>
+I have installed Jenkins as Jar file on my Developers Laptop. <br>
+$ cd /home/tomwat/skills/jenkins <br>
+$ java -jar jenkins.war --httpPort=8081 <br>
+http://localhost:8081
+Go to "Manage Jenkins" and Install Suggested Plugins. <br>
+</p>
+
+<img src="../images/jenkins1-1.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/jenkins1-2.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<img src="../images/jenkins1-3.png" alt="Helm Skills Deployment" width="800" height="600"> <br>
+<p>
+
+</body>
+</html>

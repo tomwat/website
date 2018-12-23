@@ -2,9 +2,7 @@
 <html>
 <body>
 
-<h1>Helm - package manager for Kubernetes</h1>
-
-<p>Helm packages up all the complex stuff.</p>
+<h1>Helm - generate manifest files for our Kubernetes deployment, and copy the Deployment Image from local Docker registry to ICP Private Registry</h1>
 
 <p>
 http://tech.paulcz.net/blog/getting-started-with-helm <br>
@@ -14,12 +12,22 @@ Writing a Helm Chart is easier when you start with an existing set of Kubernetes
 and then fetch the manifest. <br>
 </p>
 <p>
-$ cd helm-skills <br>
-$ mkdir manifests <br>
+The ICP Kubernetes needs the deployment image to be in their private registry.  Here you are going to login to your local docker registry. <br>
+"Tag" the image, appropriate for ICP registry...basically you associate a local imate tag with a tag for the ICP registry image <br>
+</p>
+NOTE - must be logged into IBM Cloud and kubectl associated with your cluster
+$ cd $HOME/skills/helm
+$ mkdir helm-skills-icp 
+$ mkdir helm-skills-icp/manifests <br>
+$ cd helm-skills-icp <br>
+<br>
 $ docker login mycluster.icp:8500 <br>
 $ docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
 $ docker push mycluster.icp:8500/skills/tomwatres:latest <br>
-
+</p>
+<p>
+Deploy the image to Kubernetes. <br>
+And capture the meta-data into deployment.yaml
 $ kubectl run tomwatres --image=mycluster.icp:8500/skills/tomwatres:latest -o yaml > manifests/deployment.yaml <br>
 $ kubectl get pods --selector="run=tomwatres" --output=wide <br>
 $ kubectl expose deployment tomwatres --port=80 --type=NodePort -o yaml > manifests/service.yaml <br>

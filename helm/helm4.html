@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Helm - deploy the Helm chart to IBM Kubernetes (ICP or IKS) </h1>
+
+<p>The previous steps were to generate test our app on Kubernetes and generate manifests for Helm.
+</p>
+
+<p>
+http://tech.paulcz.net/blog/getting-started-with-helm <br>
+ 
+If the previous deployment was not removed <br>
+$ helm del --purge tomwatres
+<br>
+Create the Helm scaffolding <br>
+$ cd $HOME/skills/helm/ <br>
+$ helm create helm-skills-iks <br>
+Copy over the manifest files <br>
+$ cp /tmp/manifests/* helm-skills-iks/templates/ <br>
+$ rm helm-skills-iks/templates/ingress.yaml <br>
+$ rm helm-skills-iks/templates/NOTES.txt <br>
+$ helm version <br>
+// must see both client and server (tiller) versions...if you see "Cant connect to Tiller", see Notes <br>
+// install our Helm chart to Kubernetes (ICP) <br>
+$ helm install -n tomwatres helm-skills-iks <br>
+$ curl http://169.60.133.148:30633 <br>
+</p>
+<img src="../images/helm4-1.png" alt="helm4-1" width="800" height="600"> <br>
+<img src="../images/helm4-2.png" alt="helm4-2" width="800" height="600"> <br>
+<p>
+
+</body>
+</html>

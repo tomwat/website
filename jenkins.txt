@@ -1,8 +1,17 @@
+// The entire build process
 
+// onetime setup:
+
+docker tag tomwatres:latest registry.ng.bluemix.net/myskills/tomwatres:latest
+ibmcloud cr token-add --description "Automation token" --non-expiring --readwrite
+// start jenkins 
 
 cd myskills/jenkins
 java -jar jenkins.war --httpPort=8081
 
+// update github with latest changes
+
+cd myskills/website
 git status
 git add --all
 git commit -m "Dec 20 2018"
@@ -12,9 +21,8 @@ git push origin master
 GitHub – tomwat/3MTcaddsiSy6MAc
 git status
 
-setup:
-docker tag tomwatres:latest registry.ng.bluemix.net/myskills/tomwatres:latest
-ibmcloud cr token-add --description "Automation token" --non-expiring --readwrite
+
+// build steps so far
 
 cd /home/tomwat
 rm -rf /tmp/foo
@@ -24,7 +32,9 @@ cd /tmp/foo/
 git clone https://github.com/tomwat/website.git
 docker build -t tomwatres:latest .
 
-//push to IBM Cloud registry
+echo "pushing to IBM Cloud registry"
+
 docker login -u token -p eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNDc4MTEzMi0yYmI3LTUxNzAtYWIzNS0xOWQ0MDZmY2E5ODQiLCJpc3MiOiJyZWdpc3RyeS5uZy5ibHVlbWl4Lm5ldCJ9.tjEEafaSrN6wYGFva7Fa8t-ePVf4iM3X6LZe04VStss registry.ng.bluemix.net
 
 docker push registry.ng.bluemix.net/myskills/tomwatres:latest
+
