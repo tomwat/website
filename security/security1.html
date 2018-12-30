@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Adding RBAC to Tiller</h1>
+
+<p>In Kubernetes, granting a role to an application-specific service account is a best practice to ensure that your application is operating in the scope that you have specified.  <br>
+You can add a service account to Tiller using the --service-account <NAME> flag while you’re configuring Helm. As a prerequisite, you’ll have to create a role binding which specifies a role and a service account name that have been set up in advance. 
+</p>
+
+<p>
+Reference: https://docs.helm.sh/using_helm/#role-based-access-control <br>
+Steps: <br>
+Step 1 - if Tiller is installed, remove it <br>   
+Step 2 - Create Tiller service account <br>
+Step 3 - Create a ClusterRoleBinding <br> 
+Step 4 - Start Tiller with --service-account flag <br>
+See screenshots:
+</p>
+
+
+<img src="/images/security1-1.png" alt="security 1-1" width="800" height="600">
+<img src="/images/security1-2.png" alt="security 1-2" width="800" height="600">
+<img src="/images/security1-3.png" alt="security 1-3" width="800" height="600">
+</p>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My first RBAC exercise - Helm Service Account with ClusterBinding role -  Kubernetes on IBM Cloud </h1>
+
+<p>
+https://github.com/helm/helm/blob/master/docs/rbac.md <br>
+(Excellent doc) <br>
+<br>
+Helm is not secure "out-of-the-box".  At a minimum you should enable TLS client authentication using X.509 certs, and you should setup RBAC for a Helm service account. <br>  
+<br>
+The article above gives an example of Tiller running clusterwide as cluster-admin, or scoped to a local namespace with a local role and binding.  We are doing the clusterwide Tiller option  
+</p>
+
+<p>
+Step 1 -  is to remove the current unsecure Tiller from Kubernetes <br>
+<br>
+$ kubectl get pods -n kube-system | grep tiller <br>
+tiller-deploy-74d5d98d7d-s8r97                                  1/1     Running   0          2d <br>
+$ helm reset <br>
+  Error: there are still 1 deployed releases (Tip: use --force to remove Tiller. Releases will not be deleted) <br>
+$ helm reset --force
+  Tiller (the Helm server-side component) has been uninstalled from your Kubernetes Cluster.
+$ kubectl get pods -n kube-system | grep tiller <br>
+tiller-deploy-74d5d98d7d-78yu6                                  1/1     Running   0          2d <br>
+Hmmm....tiller is still running <br>
+  kube-system   pod/tiller-deploy-74d5d98d7d-s8r97                                   1/1     Running   0          4d <br>
+See --> https://stackoverflow.com/questions/53612553/how-to-uninstall-remove-tiller-from-kubernetes-manually <br>
+The helm reset commands seem to remove the Tiller deployment and service, but not the pod or replica set <br>
+$ kubectl get all -n kube-system -l app=helm -o name <br>
+pod/tiller-deploy-74d5d98d7d-s8r97 <br>
+replicaset.apps/tiller-deploy-74d5d98d7d <br>
+<br>
+$ kubectl get all -n kube-system -l app=helm -o name|xargs kubectl delete -n kube-system <br>
+pod "tiller-deploy-74d5d98d7d-s8r97" deleted <br>
+replicaset.apps "tiller-deploy-74d5d98d7d" deleted <br>
+<br>
+$ helm version
+Client: &version.Version{SemVer:"v2.12.0", GitCommit:"d325d2a9c179b33af1a024cdb5a4472b6288016a", GitTreeState:"clean"} <br>
+Error: could not find tiller
+</p>
+
+<p>
+Step 2 is to create the "tiller" service account and bind it to the cluster role of "cluster-admin".
+</p>
+
+<p>
+Final step is to deploy Tiller <br>
+$ helm init --service-account tiller
+</p>
+
+<p>
+Note - Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy <br>
+To prevent this, run `helm init` with the --tiller-tls-verify flag <br>
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation <br>
+</p>
+
+<p>
+<img src="/images/kubernetes4-0.png" alt="kubernetes 4-0" width="800" height="600">
+<img src="/images/kubernetes4-1.png" alt="kubernetes 4-1" width="800" height="600">
+<img src="/images/kubernetes4-2.png" alt="kubernetes 4-2" width="800" height="600">
+<img src="/images/kubernetes4-3.png" alt="kubernetes 4-3" width="800" height="600">
+</p>
+</body>
+</html>
