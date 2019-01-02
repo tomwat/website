@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Datapower on Docker</h1>
+
+<p>
+https://developer.ibm.com/datapower/config/
+<br> 
+My plan is to maintain Datapower configuration on Dev workstation, test locally, push new images to IBM IKS,  and deploy to Kubernetes (IKS).  No git at this point.  <br>
+</p>
+<p>
+mkdir datapower <br>
+$ cd $HOME/skills/datapower <br>
+
+$ docker run -it \ <br>
+   -v $PWD/config:/drouter/config \ <br>
+   -v $PWD/local:/drouter/local \ <br>
+   -e DATAPOWER_ACCEPT_LICENSE=true \ <br>
+   -e DATAPOWER_INTERACTIVE=true \ <br>
+   -p 9090:9090 \ <br>
+   -p 9022:22 \ <br>
+   -p 5554:5554 \ <br>
+   -p 8000-8010:8000-8010 \ <br>
+   --name idg \ <br>
+   ibmcom/datapower <br>
+<br>
+https://localhost:9090 <br>
+and: <br>
+http://localhost:8000/api/pokemons/1 <br>
+<br>
+kill container (CTRL-C) <br>
+$ docker ps -a | grep datapower <br>
+$ docker rm CONTAINER_ID <br>
+<br>
+$ cat Dockerfile <br>
+ <br>
+ FROM ibmcom/datapower <br>
+ ENV DATAPOWER_ACCEPT_LICENSE=true \ <br>
+     DATAPOWER_WORKDR_THREADS=2 \ <br>
+     DATAPOWER_INTERACTIVE=true <br>
+ COPY config /drouter/config <br>
+ COPY local /drouter/local <br>
+ <br>
+$ docker build -t tomwat-dp . <br>
+$ docker images | grep tomwat-dp <br>
+//test image: <br>
+$ docker run -it -p 9090:9090 -p 8000-8010:8000-8010 tomwat-dp <br>
+$ docker rm Docker-ID <br>
+<br>
+
+</p>
+<p>
+<img src="../images/datapower1-1.png" alt="datapower 1-1" width="800" height="600">
+<img src="../images/datapower1-2.png" alt="datapower 1-2" width="800" height="600">
+<img src="../images/datapower1-3.png" alt="datapower 1-3" width="800" height="600">
+<img src="../images/datapower1-4.png" alt="datapower 1-4" width="800" height="600">
+</p>
+
+</body>
+</html>

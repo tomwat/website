@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Datapower on Kubernetes</h1>
+
+<p>
+Note: a brand new namespace needs to be configured with ImagePullSecrets to access the Kubernetes private registry - see CheatSheets FAQ <br>
+</p>
+
+<p>
+
+Docker image must be copied from local to Kubernetes private registry <br>
+<br>
+$ docker images | grep tomwat-dp <br>
+$ docker tag tomwat-dp:latest registry.ng.bluemix.net/apic-iks/tomwat-dp:latest <br> 
+$ bx cr login <br>
+$ docker push registry.ng.bluemix.net/apic-iks/tomwat-dp:latest <br>
+</p>
+
+<p>
+Create the datapower pod using YAML file <br>
+<br>
+$ cd /home/tomwat/skills/datapower <br>
+$ kubectl create -f  my-datapower-pod.yaml
+</p>
+
+<p>
+Create the datapower service using YAML file <br>
+$ cd /home/tomwat/skills/datapower <br>
+$ kubectl create -f  my-datapower-service.yaml
+</p>
+
+<p>
+Validate that Datapower is working on IKS <br>
+<br>
+https://169.60.133.148:9090/dp/login.xml <br>
+http://169.60.133.148:8000/api/pokemons/1
+</p>
+
+<p>
+<img src="../images/datapower2-1.png" alt="datapower 2-1" width="800" height="600">
+<img src="../images/datapower2-2.png" alt="datapower 2-2" width="800" height="600">
+<img src="../images/datapower2-3.png" alt="datapower 2-3" width="800" height="600">
+<img src="../images/datapower2-4.png" alt="datapower 2-4" width="800" height="600">
+<img src="../images/datapower2-5.png" alt="datapower 2-5" width="800" height="600">
+</p>
+
+
+
+</body>
+</html>

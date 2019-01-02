@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Set a context utilizing a specific username and namespace</h1>
+
+<p>
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/ <br>
+<br> 
+Tired of entering the -n tag for every command?  Set your defaults with the following:
+</p>
+<p>
+$ kubectl config view <br>
+$ kubectl config get-contexts <br>
+
+  CURRENT   NAME             CLUSTER          AUTHINFO            NAMESPACE <br>
+  *         tomwat-cluster   tomwat-cluster   tomwat@us.ibm.com   default <br>
+
+$ kubectl config set-context tomwat-cluster --user=cluster-admin --namespace=apic \ <br>
+  && kubectl config use-context tomwat-cluster <br>
+
+</p>
+<p>
+<img src="../images/cheat1-1.png" alt="cheat1-1" width="800" height="600">
+</p>
+
+</body>
+</html>

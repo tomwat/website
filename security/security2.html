@@ -2,107 +2,118 @@
 <html>
 <body>
 
-<h1>Secure Helm client to Tiller service using RBAC and TLS </h1>
+<h1>Secure Helm client to Tiller service using TLS</h1>
 
 <p>
-Excellent References: <br>
+https://docs.helm.sh/using_helm/#using-ssl-between-helm-and-tiller <br>
 https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/ <br>
-https://github.com/helm/helm/blob/master/docs/rbac.md <br>
 <br>
-https://docs.helm.sh/using_helm/#using-ssl-between-helm-and-tiller 
-</p>
-
-<p>
 Helm is not secure.  By default, Tiller is deployed with an insecure 'allow unauthenticated users' policy. Anybody that knows/steals your cluster-context, can deploy malicious apps.  This is how we prevent that:  <br>
+The Tiller authentication model uses client-side SSL certificates. Tiller itself verifies these certificates using a certificate authority. Likewise, the client also verifies Tiller’s identity by certificate authority.
 <br>
-Step 1 - if Tiller is installed, remove it <br>   
-Step 2 - Create User (Helm) With Certificate/Key and  Limited Namespace Access <br>
-Step 3 - Create a new context with the new credentials in your Kubernetes cluster <br>
-Step 4 - Create a role "deployment-manager" that has explicit permissions and bind role to user Helm <br>
+Step 0 - if Tiller is installed, remove it <br>   
+Step 1 - Create a private CA that is used to issue certificates for Tiller clients and servers <br>
+Step 2 - Create keys for both Helm client and Tiller service <br>
+         Create CSR - Certificate Signing Request for each <br>
+Step 3 - Locate your Kubernetes cluster configuration <br>
+Step 4 - Download your Kubernetes CA certificate/key <br>
+Step 5 - generate the Helm and Tiller certificate <br>
+Step 7 - execute a helm init dry run to test TLS <br>
+Step 8 - remove dry run, start Tiller for real on TLS <br>
+Step 9 - remove dry run, start Tiller for real on TLS <br>
 </p>
 
 <p>
-Step 1 - if Tiller is installed, remove it <br>    
-Tiller removal is not straight-forward  <br>
-The helm reset commands seem to remove the Tiller deployment and service, but not the pod or replica set - screenshot below <br>
-Also see --> https://stackoverflow.com/questions/53612553/how-to-uninstall-remove-tiller-from-kubernetes-manually <br>
+Step 0 - if Tiller is installed, remove it <br>    
+Reference --> https://stackoverflow.com/questions/53612553/how-to-uninstall-remove-tiller-from-kubernetes-manually <br>
+$ helm reset <br>
+$ helm reset --force <br>
+$ kubectl get pods -n kube-system | grep tiller <br>
+$ kubectl get all -n kube-system -l app=helm -o name | xargs kubectl delete -n kube-system <br>
+$ helm version (Tiller not found)
 </p>
 
 <p>
-Step 2 - Create User (Helm) With Limited Namespace Access - see screenshots <br>
-     Step 2a - Create a namespace called "skills"
-     Step 2b - Create a private key for the Helm client <br>
-     Step 2c - Create a CSR - Certificate Signing Request <br>
-     Step 2d - Locate your Kubernetes cluster configuration <br>
-     Step 2e - Download your Kubernetes CA certificate/key <br>
-     Step 2f - generate the Helm client certificate <br>
+The simplest way to generate a certificate authority is to run two commands: <br>
+$ openssl genrsa -out ./ca.key.pem 4096 <br>
+$ 
+$ 
 </p>
 
 <p>
-Step 2a - Create a namespace called "skills" <br>
-$ kubectl create namespace skills
+Step 2 - Create key/cert pairs for both Helm client and Tiller service <br>
+$ cd $HELM_HOME <br>
+$ openssl genrsa -out tiller.key.pem 4096 <br>
+$ openssl genrsa -out helm.key.pem 4096 <br>
+$ openssl req -key tiller.key.pem -new -sha256 -out tiller.csr.pem <br>
+$ openssl req -key helm.key.pem -new -sha256 -out helm.csr.pem
+</p>
+
+<p>
+***NOTE ***** workign with the existing Kubernetes CA does not seem to work <br>
 <br>
-Step 2b - Create a private key for the Helm client <br>
-Screenshot below: <br>
-<br>
-Step 2c - Create a CSR - Certificate Signing Request <br>
-openssl req -new -key helm.key -out helm.csr -subj "/CN=helm/O=acme" <br>
-<br>
-Step 2d - Locate your Kubernetes cluster configuration <br>
+Step 3 - Locate your Kubernetes cluster configuration <br>
 In our case: <br> 
-~/.bluemix/plugsins/container-service/clusters/tomwat-cluster <br>
-<br>
-Step 2e - Download your Kubernetes CA certificate/key <br>
+~/.bluemix/plugsins/container-service/clusters/tomwat-cluster
+</p>
+
+<p>
+***NOTE ***** workign with the existing Kubernetes CA does not seem to work <br>
+Step 4 - Download your Kubernetes CA certificate/key <br>
 We will be using the CA included with the IBM Cloud Kubernetes service <br>
 To create the Helm certificate from the CSR, we need the certificate/key for the CA <br>
-See screenshot 
-<br>
-Step 2f - generate the Helm client certificate <br>
-$ openssl x509 -req -in helm.csr -CA ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin.pem -CAkey ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin-key.pem  -CAcreateserial -out helm.crt -days 500 
+$ ibmcloud cs cluster-config tomwat-cluster --admin <br>
+This will download admin.pem and admin-key.pem to the configuration directory <br>
+See screenshot: 
 </p>
 
 <p>
-Step 3 - Create a new context with the new credentials in your Kubernetes cluster. <br>
-Note: in IKS, the creation of a new context seems to be "ephemeral".  You will have to run these 2 commands each time you establish a new session with User Helm. <br>
+Step 5 - generate the Helm and Tiller certificate <br>
+$ openssl x509 -req -CA ca.cert.pem -CAkey ca.key.pem -CAcreateserial -in tiller.csr.pem -out tiller.cert.pem -days 365 <br>
 <br>
-$ kubectl config set-credentials helm --client-certificate=/home/tomwat/skills/helm/tls/helm.crt  --client-key=/home/tomwat/skills/helm/tls/helm.key <br>
-<br>
-$ kubectl config set-context helm-deploy --cluster=tomwat-cluster --namespace=skills --user=helm <br.
-<br>
-Now you should get an access denied error when using the kubectl CLI with this configuration file. This is expected as we have not defined any permitted operations for this user <br>
-$ kubectl --context=helm-context get pods
+$ openssl x509 -req -CA ca.cert.pem -CAkey ca.key.pem -CAcreateserial -in helm.csr.pem -out helm.cert.pem  -days 365
+</p>
+
+
+<p>
+Step 7 - execute a helm init dry run to test TLS <br>
+$ helm init --dry-run --debug --tiller-tls --tiller-tls-cert tiller.cert.pem --tiller-tls-key tiller.key.pem --tiller-tls-verify --tls-ca-cert ca.cert.pem
 </p>
 
 <p>
-Step 4a - Create a role "deployment-manager" that has explicit permissions. The role is scoped to "skills" namespace, and scoped to "deployment" resources <br>
-<r>
-$ kubectl create -f role-deployment-manager.yaml <br>
+Step 8 - remove dry run, start Tiller for real on TLS <br>
+$ helm init --tiller-tls --tiller-tls-cert tiller.cert.pem --tiller-tls-key tiller.key.pem --tiller-tls-verify --tls-ca-cert ca.cert.pem <br>
 <br>
-Step 4b - Bind The depoyment-manager Role to the user Helm, inside the skills namespace <br>
-<br>
-$ kubectl create -f rolebinding-deployment-manager.yaml <br>
-To validate: <br>
-$ kubectl get roles -n skills <br>
-$ kubectl get rolebindings -n skills
+Notice that helm commands don't work.  This is because your Helm client does not have the correct certificate to authenticate to Tiller 
 </p>
+
 <p>
-Step 5 - Test RBAC <br>
-Now you should be able to execute the following commands without any issues: <br>
-
-$ kubectl --context=helm-deploy run --image bitnami/dokuwiki mydokuwiki <br>
-$ kubectl --context=tomwat-cluster run --image bitnami/dokuwiki mydokuwiki <br>
-
-Fails.....on both contexts.
+Step 9 - configure the Helm client. <br>
+<br>
+The Tiller server is now running with TLS protection. It’s time to configure the Helm client to also perform TLS operations. <br>
+For a quick test, we can specify our configuration manually. We’ll run a normal Helm command (helm ls), but with SSL/TLS enabled. the Helm client to also perform TLS operations. <br>
+<br>
+$ helm ls --tls --tls-ca-cert ca.cert.pem --tls-cert helm.cert.pem --tls-key helm.key.pem <br>
+<br>
+To create a TLS shortcut, copy these files: <br>
+$ cp ca.cert.pem ca.pem <br>
+$ cp helm.cert.pem cert.pem <br>
+$ cp helm.key.pem key.pem <br>
+<br>
+$ helm ls --tls
 </p>
 
-<img src="/images/security2-1.png" alt="security 2-1" width="800" height="600">
+<p>
+<img src="/images/security2-0.png" alt="security 2-0" width="800" height="600">
 <img src="/images/security2-2a.png" alt="security 2-2a" width="800" height="600">
-<img src="/images/security2-2d.png" alt="security 2-2d" width="800" height="600">
-<img src="/images/security2-2e.png" alt="security 2-2e" width="800" height="600">
-<img src="/images/security2-2f.png" alt="security 2-2f" width="800" height="600">
+<img src="/images/security2-2b.png" alt="security 2-2b" width="800" height="600">
 <img src="/images/security2-3.png" alt="security 2-3" width="800" height="600">
-<img src="/images/security2-4a.png" alt="security 2-4b" width="800" height="600">
+<img src="/images/security2-4.png" alt="security 2-4" width="800" height="600">
 <img src="/images/security2-5.png" alt="security 2-5" width="800" height="600">
+<img src="/images/security2-6.png" alt="security 2-6" width="800" height="600">
+<img src="/images/security2-7.png" alt="security 2-7" width="800" height="600">
+<img src="/images/security2-8.png" alt="security 2-8" width="800" height="600">
+<img src="/images/security2-9.png" alt="security 2-9" width="800" height="600">
 </p>
 </body>
 </html>

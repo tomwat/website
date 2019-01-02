@@ -11,23 +11,10 @@ java -jar jenkins.war --httpPort=8081
 
 // update github with latest changes
 
-cd myskills/website
-git status
-git add --all
-git commit -m "Dec 20 2018"
-git status
-git push origin master
-
-GitHub – tomwat/3MTcaddsiSy6MAc
-git status
-
-
-// build steps so far
-
 cd /home/tomwat
 rm -rf /tmp/foo
 mkdir /tmp/foo
-cp /home/tomwat/skills/myskills/Dockerfile /tmp/foo/
+cp /home/tomwat/skills/website/Dockerfile /tmp/foo/
 cd /tmp/foo/
 git clone https://github.com/tomwat/website.git
 docker build -t tomwatres:latest .
@@ -37,8 +24,11 @@ docker login -u token -p eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNDc4MT
 docker push registry.ng.bluemix.net/myskills/tomwatres:latest
 echo "destroy running app"
 export KUBECONFIG=/home/tomwat/.bluemix/plugins/container-service/clusters/tomwat-cluster/kube-config-dal13-tomwat-cluster.yml
-helm del --purge tomwatres
+echo "remove older version of tomwatres deployment"
+cd /home/tomwat/.helm
+helm del --purge tomwatres --tls
+export HELM_HOME=/home/tomwat/.helm
+echo "install tomwatres deployment"
 cd /home/tomwat/skills/helm
-helm install -n tomwatres helm-skills-iks
-
+helm install --tls -n tomwatres helm-skills-iks
 

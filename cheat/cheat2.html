@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Add a ImagePullSecret to a new namespace</h1>
+
+<p>
+https://console.bluemix.net/docs/containers/cs_images.html#pod_imagePullSecret <br>
+<br> 
+In a new namespace, pods are not allowed by default to pull images from the private registry.  "kubectl describe pod <PODNAME>" will probably say "authentication required".  The issue is a lack of a defined ImagePullSecret for the new domain <br>
+These things have to happen: <br>
+  1. copy the ImagePullSecret from default namespace
+  2. add the secrets to the default service account for namespace apic-iks  
+<br>
+Every namespace has a Kubernetes service account that is named default. You can add the imagePullSecret to this service account to grant access to images in your registry. Deployments that do not specify a service account automatically use the default service account for this namespace <br>
+</p>
+
+<p>
+Step  1. copy the ImagePullSecret from default namespace <br>
+<br>
+$ kubectl get secret bluemix-default-secret-regional <br>
+$ kubectl get secret bluemix-default-secret-international <br>
+$ kubectl get secrets -n apic <br>
+$ kubectl get secret bluemix-default-secret-regional -o yaml | sed 's/default/apic/g' | kubectl -n apic create -f - <br>
+$ kubectl get secret bluemix-default-secret-international -o yaml | sed 's/default/apic/g' | kubectl -n apic create -f - <br>
+$ kubectl get secrets -n apic
+</p>
+<p>
+Step  2. add the secrets to the default service account for namespace apic-iks <br>
+<br> 
+$ kubectl describe serviceaccount default -n apic-iks <br>
+  No image pull secrets are defined for the default service account
+$ kubectl patch -n apic-iks serviceaccount/default --type='json' -p='[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"bluemix-apic-iks-secret-regional"}}]' <br>
+<br>
+$ kubectl patch -n apic-iks serviceaccount/default --type='json' -p='[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"bluemix-apic-iks-secret-international"}}]' <br>
+<br>
+$ kubectl describe serviceaccount default -n apic-iks
+</p>
+
+<p>
+<img src="../images/cheat2-1.png" alt="cheat2-1" width="800" height="600">
+<img src="../images/cheat2-2.png" alt="cheat2-2" width="800" height="600">
+</p>
+
+</body>
+</html>

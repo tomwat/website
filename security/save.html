@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Secure Helm client to Tiller service using TLS </h1>
+
+<p>
+https://docs.helm.sh/using_helm/#using-ssl-between-helm-and-tiller <br>
+https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/ <br>
+<br>
+Helm is not secure.  By default, Tiller is deployed with an insecure 'allow unauthenticated users' policy. Anybody that knows/steals your cluster-context, can deploy malicious apps.  This is how we prevent that:  <br>
+<br>
+Step 1 - if Tiller is installed, remove it <br>   
+Step 2 - Create keys for both Helm client and Tiller service <br>
+         Create CSR - Certificate Signing Request for each <br>
+Step 3 - Locate your Kubernetes cluster configuration <br>
+Step 4 - Download your Kubernetes CA certificate/key <br>
+Step 5 - generate the Helm and Tiller certificate <br>
+Step 6 - move all crypto keys and certs to $HELM_HOME <br>
+Step 7 - execute a helm init dry run to test TLS <br>
+Step 8 - remove dry run, start Tiller for real on TLS <br>
+</p>
+
+<p>
+Step 1 - if Tiller is installed, remove it <br>    
+Reference --> https://stackoverflow.com/questions/53612553/how-to-uninstall-remove-tiller-from-kubernetes-manually <br>
+$ helm reset <br>
+$ helm reset --force <br>
+$ kubectl get pods -n kube-system | grep tiller <br>
+$ kubectl get all -n kube-system -l app=helm -o name | xargs kubectl delete -n kube-system <br>
+$ helm version (Tiller not found)
+</p>
+
+<p>
+Step 2 - Create key/cert pairs for both Helm client and Tiller service <br>
+$ openssl genrsa -out tiller.key 2048 <br>
+$ openssl genrsa -out helm.key 2048 <br>
+$ openssl req -new -key tiller.key -out tiller.csr -subj "/CN=tiller/O=acme" <br>
+$ openssl req -new -key helm.key -out helm.csr -subj "/CN=helm/O=acme"
+</p>
+
+<p>
+Step 3 - Locate your Kubernetes cluster configuration <br>
+In our case: <br> 
+~/.bluemix/plugsins/container-service/clusters/tomwat-cluster
+</p>
+
+<p>
+Step 4 - Download your Kubernetes CA certificate/key <br>
+We will be using the CA included with the IBM Cloud Kubernetes service <br>
+To create the Helm certificate from the CSR, we need the certificate/key for the CA <br>
+$ ibmcloud cs cluster-config tomwat-cluster --admin <br>
+This will download admin.pem and admin-key.pem to the configuration directory <br>
+See screenshot: 
+</p>
+
+<p>
+Step 5 - generate the Helm and Tiller certificate <br>
+$ openssl x509 -req -in helm.csr -CA ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin.pem -CAkey ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin-key.pem  -CAcreateserial -out helm.crt -days 500  <br>
+$ openssl x509 -req -in tiller.csr -CA ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin.pem -CAkey ~/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin-key.pem  -CAcreateserial -out tiller.crt -days 500
+</p>
+
+<p>
+Step 6 - move all crypto keys and certs to $HELM_HOME <br>
+</p>
+
+<p>
+Step 7 - execute a helm init dry run to test TLS <br>
+$ helm init --dry-run --debug --tiller-tls --tiller-tls-cert $HELM_HOME/tiller.crt --tiller-tls-key $HELM_HOME/tiller.key --tiller-tls-verify --tls-ca-cert /home/tomwat/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin.pem
+</p>
+
+<p>
+Step 8 - remove dry run, start Tiller for real on TLS <br>
+$ helm init --tiller-tls --tiller-tls-cert $HELM_HOME/tiller.crt --tiller-tls-key $HELM_HOME/tiller.key --tiller-tls-verify --tls-ca-cert /home/tomwat/.bluemix/plugins/container-service/clusters/tomwat-cluster-admin/admin.pem <br>
+<br>
+Notice that helm commands don't work.  This is because your Helm client does not have the correct certificate to authenticate to Tiller <br>
+</p>
+
+<p>
+<img src="/images/security2-1.png" alt="security 2-1" width="800" height="600">
+<img src="/images/security2-2.png" alt="security 2-2" width="800" height="600">
+<img src="/images/security2-3.png" alt="security 2-3" width="800" height="600">
+<img src="/images/security2-4.png" alt="security 2-4" width="800" height="600">
+<img src="/images/security2-5.png" alt="security 2-5" width="800" height="600">
+<img src="/images/security2-7.png" alt="security 2-7" width="800" height="600">
+<img src="/images/security2-8.png" alt="security 2-8" width="800" height="600">
+</p>
+</body>
+</html>
