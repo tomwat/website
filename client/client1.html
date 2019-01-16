@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>IBM Cloud Private - Install on IBM Cloud Vms </h1>
+
+<p>
+Dave Krier ICP 311 instructions: <br>
+https://ibm-icp-coc.github.io/ICP-311-Install/
+</p>
+
+<p>
+Notes: <br>
+1. I went with 1 master node and 1 worker node.  Each configured as 8vcpu and 32gb RAM.  <br>
+2. take your time and switch back and forth between master and worker config.  I got into some kind of ssh issue because I went too fast <br>
+</p>
+
+<p>
+Set my Kuberntes client to IBM Cloud Private kubernetes config: <br>
+<br>
+Go to the ICP GUI, and select "Configure Client" <br>
+On your client, run the script "set-icp-client.sh" in my HOME dir  
+</p>
+
+<p>
+<img src="../images/icp0-1.png" alt="ICP 0-1" width="800" height="600">
+<img src="../images/icp0-2.png" alt="ICP 0-2" width="800" height="600">
+<img src="../images/icp0-3.png" alt="ICP 0-3" width="800" height="600">
+</p>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>IBM Cloud Private - Install on IBM Cloud Vms and CLI installs </h1>
+
+<p>
+Dave Krier ICP 311 instructions: <br>
+https://ibm-icp-coc.github.io/ICP-311-Install/
+</p>
+
+<p>
+Notes: <br>
+1. I went with 1 master node and 1 worker node.  Each configured as 8vcpu and 32gb RAM.  <br>
+2. take your time and switch back and forth between master and worker config.  I got into some kind of ssh issue because I went too fast <br>
+</p>
+
+<p>
+Set my Kuberntes client to IBM Cloud Private kubernetes config: <br>
+<br>
+Go to the ICP GUI, and select "Configure Client" <br>
+On your client, run the script "set-icp-client.sh" in my HOME dir  
+</p>
+
+<p>
+kubectl:
+</p>
+
+<p>
+helm:
+Removed my helm client version 2.12.0 by deleting /usr/local/bin/helm and removing my $HOME/.helm directory <br>
+Install via curl using instructions on GUI <br>
+Both server and client Helm is version 2.9.1. <br>
+Note: <br>
+Tiller is typically installed into a Kubernetes cluster, however, ICP already has Tiller loaded and running in ICP <br>
+See --> https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.3/app_center/create_helm_cli.html <br>
+This has implications for me since I need Helm, actually HELM over TLS, to operate over 2 different clusters...different certs and keys, for example <br>
+This has prompted me to have 2 separate config files in my $HOME dir...one to setup helm, kubectl, etc to point to IKS cluster, and another config file for ICP
+</p
+
+<p>
+Much more comprehensive examples of client config: <br>
+<br>
+https://github.com/open-toolchain/commons/blob/master/scripts/check_predeploy.sh<br>
+https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/
+<p>
+<img src="../images/icp0-1.png" alt="ICP 0-1" width="800" height="600">
+<img src="../images/icp0-2.png" alt="ICP 0-2" width="800" height="600">
+<img src="../images/icp0-3.png" alt="ICP 0-3" width="800" height="600">
+<img src="../images/icp0-4.png" alt="ICP 0-4" width="800" height="600">
+</p>
+</body>
+</html>

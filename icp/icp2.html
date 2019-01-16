@@ -2,35 +2,23 @@
 <html>
 <body>
 
-<h1>IBM Cloud Private - Private Image Registry - Setup and Push image </h1>
+<h1>IBM Cloud Private - Namespace considerations </h1>
 
-<p>To deploy from Dev Workstation Helm CLI, I need to push my image to ICP.</p>
+<p>Namespaces in ICP require a bit more consideration than pure Kubernetes</p>
 
-<p>
-https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/manage_images/configuring_docker_cli.html <br>
-https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/manage_images/using_docker_cli.html <br>
- 
-To access the private image registry from outside your IBM® Cloud Private cluster, <br>
-set up authentication from your developers workstation to the cluster.  <br>
-</p>
-
-<p>
-Note - there is a missing step, you must also copy over the root-ca.crt file in addition to ca.crt. 
-</p>
-
-<p>
-docker images | grep tomwatres <br>
-docker login mycluster.icp:8500 <br>
-docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
-docker push mycluster.icp:8500/skills/tomwatres:latest <br>
-</p>
 <p>
 Note - ICP 311 has rigorous security.  When you create your namespace, the pod security <br>
 policy will need to be defined.  Also, there is an Image Policy....see ICP Namespaces. <br>
 Originally, I was only able to deploy this in default namespace.
 </p>
+<p>
+https:
+</p>
 
-<img src="../images/icp1-1.png" alt="ICP Images" width="800" height="600">
+<p>
+<img src="../images/icp2-1.png" alt="ICP Images" width="800" height="600">
+</p>
+
 
 <p> Another interesting thing about images...when you tag the image with <br>
 the image for ICP, it does not delete the previous, it just makes this new <br>

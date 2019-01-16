@@ -15,14 +15,16 @@ set up authentication from your developers workstation to the cluster.  <br>
 </p>
 
 <p>
-Note - there is a missing step, you must also copy over the root-ca.crt file in addition to ca.crt. 
+Note - there is a missing step, you must also copy over the root-ca.crt file in addition to ca.crt <br>
+<br>
+Also, make sure that the mycluster.icp is in the /etc/hosts file.
 </p>
 
 <p>
-docker images | grep tomwatres <br>
-docker login mycluster.icp:8500 <br>
-docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
-docker push mycluster.icp:8500/skills/tomwatres:latest <br>
+$ docker images | grep tomwatres <br>
+$ docker login mycluster.icp:8500 <br>
+$ docker tag tomwatres:latest mycluster.icp:8500/skills/tomwatres:latest <br>
+$ docker push mycluster.icp:8500/skills/tomwatres:latest <br>
 </p>
 <p>
 Note - ICP 311 has rigorous security.  When you create your namespace, the pod security <br>

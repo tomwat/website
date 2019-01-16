@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Understanding DNS on Kubernetes - Basics</h1>
+
+<p>
+https://www.youtube.com/watch?v=W5xHec3_Tts <br>
+//don't use the YAML in the video, use this instead:
+https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/ <br>
+<br> 
+//verify dns is running <br>
+$ kubectl get svc -n kube-system | grep dns <br>
+<br>
+//install busybox <br>
+$ kubectl create -f https://k8s.io/examples/admin/dns/busybox.yaml <br>
+// Note: must be a certain verision of busybox...look at YAML <br>
+//from the video - run some dns commands: <br>
+$ kubectl exec -it busybox -- /bin/sh <br>
+$ kubectl exec -ti busybox -- nslookup kubernetes.default <br>
+// kube-dns.kube-system.svc.cluster.local: <br>
+   service-name.namespace.service-type.domain?? <br>
+<br>
+$ kubectl exec busybox cat /etc/resolv.conf <br>
+</p>
+<p>
+//difference between "ping" and "nslookup" <br>
+$ kubectl exec busybox ping kube-dns <br>
+    ping: bad address 'kube-dns' <br>
+// ping does not work because ICMP not enabled on kube-dns <br>
+$ kubectl get services <br>
+$ kubectl exec busybox ping tomwatres <br>
+//just hangs <br>
+$ kubectl exec busybox nslookup tomwatres
+//works
+</p>
+</p>
+<p>
+//look inside the kube-dns container logs <br>
+$ kubectl logs --namespace=kube-system kube-dns-amd64-7899c75955-8tk6b -c kubedns <br>
+//we see that SkyDNS libraries are loaded <br>
+//and domain has been set to "cluster.local" 
+</p>
+<p>
+
+</p>
+<p>
+<img src="../images/dns1-1.png" alt="dns1-1" width="800" height="600">
+<img src="../images/dns1-2.png" alt="dns1-2" width="800" height="600">
+<img src="../images/dns1-3.png" alt="dns1-3" width="800" height="600">
+<img src="../images/dns1-4.png" alt="dns1-4" width="800" height="600">
+</p>
+
+</body>
+</html>

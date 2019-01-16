@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Some Helpful kubectl commands</h1>
+
+<p>
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/ <br>
+</p>
+
+<p>
+//show all deployments, services, pods and replicasets in a namespace <br>
+$ kubectl version --short <br>
+$ kubectl cluster-info  <cr>
+$ kubectl cluster-info | grep -i dns <cr>
+$ kubectl get all -n <NAMESPACE> <br>
+$ kubectl config view <br>
+$ kubectl config get-contexts <br>
+$ kubectl config set-context tomwat-cluster --user=cluster-admin --namespace=apic \ <br>
+  && kubectl config use-context tomwat-cluster <br>
+$ kubectl exec busybox nslookup kubernetes.default <br>
+</p>
+
+</body>
+</html>

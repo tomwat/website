@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>IBM Cloud Private - Helm considerations - Configure SSL for example </h1>
+
+
+<p>
+https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.1/app_center/create_helm_cli.html <br>
+<br>
+Because IBM Cloud Private offers role-based access control, you must install a specific version of the Helm CLI client and provide certificates that contain the IBM Cloud Private access token for a specific account. <br>
+<br>
+Step 0 - Remove Helm from your Linux client if already installed <br> 
+Step 1 - Install the correct Helm version by using the Web GUI  <br>
+Step 2 - Initialize the Helm client <br>
+Step 3 - Download ICP certificate/key required to do TLS/SSL <br>
+Step 4 -  
+</p>
+
+<p>
+Step 0 - Remove Helm from your Linux client if already installed  <br.
+<br>
+Interesting thing here is I already have Helm for pushing my website to IKS - IBM Cloud Kubernetes Service.  This means I also have an existing HELM_HOME - /home/tomwat/.helm <br>
+This is not going to work since I now have ICP Kubernetes that I will be helming to <br>
+So, I now have different config files "icp.sh" and "iks.sh" that will set HELM_HOME to either .helm-iks or .helm-icp <br>
+To remove helm, just remove the existing /usr/local/bin/helm binary.
+</p>
+
+<p>
+Step 1 - Install the correct Helm version by using the Web GUI <br>
+<br>
+Helm client and server versions must be the same in ICP, probably in IKS also <br>
+From the ICP GUI: <br>
+$ curl -kLo helm-linux-amd64-v2.9.1.tar.gz https://169.61.52.138:8443/api/cli/helm-linux-amd64.tar.gz <br>
+extract the helm binary and cp it to /usr/local/bin/helm <br>
+<br>
+Notice "error - cannot connect to Tiller"
+</p>
+
+<p>
+Step 2 - Initialize the Helm client <br>
+<br>  
+Set the HELM_HOME on command line and in icp.sh profile <br>
+$ helm init --client-only
+</p>
+
+<p>
+Step 3 - Download ICP certificate/key required to do Helm-to-Tiller TLS/SSL <br>
+<br>
+By logging into ICP as the admin user, $HELM_HOME is automatically populated with the certificates and keys required <br>
+<br>
+$ helm version --tls <br>
+Now shows matching client and Tiller versions
+</p>
+
+<p>
+<img src="../images/icp3-1.png" alt="icp3.1" width="800" height="600">
+<img src="../images/icp3-2.png" alt="icp3.2" width="800" height="600">
+</p>
+
+</body>
+</html>
