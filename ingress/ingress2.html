@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<h1>Kubernetes Ingress Tutorial </h1>
+<h1>Kubernetes Ingress on IKS</h1>
 
 <p>
 https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html <br>
@@ -39,18 +39,9 @@ $ kubectl apply -f banana.yaml
 <p>
 Now, declare an Ingress to route requests to /apple to the first service, and requests to /banana to second service. Check out the Ingress’ rules field that declares how requests are passed along <br>
 <br>
-Test the Ingress: <br>
+$ curl -kL http://169.60.133.148/apple <br>
+curl: (7) Failed to connect to 169.60.133.148 port 80: Connection refused <br>
 <br>
-$ ping tomwat-cluster.us-south.containers.appdomain.cloud <br>
-PING tomwat-cluster.us-south.containers.appdomain.cloud (169.60.133.150) 56(84) bytes of data <br>
-64 bytes from 96.85.3ca9.ip4.static.sl-reverse.com (169.60.133.150): icmp_seq=1 ttl=128 time=8.23 ms <br>
-<br>
-$ curl -kL http://169.60.133.150/apple <br>
-  404 Not Found <br>
-<br>
-$ curl -kL http://169.60.133.149/apple <br>
-apple <br>
-Huh....why does it work on 149 and not 150? <br>
 With the Ingress running on IBM Public Kubernetes Service, looks like I have some additional configuration TODO <br>
 https://console.bluemix.net/docs/containers/cs_ingress.html#ingress
 </p>
