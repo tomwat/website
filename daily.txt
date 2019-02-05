@@ -5,4 +5,9 @@ $ git status
 
 $ git add --all
 $ git commit -m "commit msg"
+$ git push origin master
+username: tomwat
+password: 3MTcaddsiSy6MAc
+
+
 
