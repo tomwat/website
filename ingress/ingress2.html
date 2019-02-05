@@ -5,56 +5,20 @@
 <h1>Kubernetes Ingress on IKS</h1>
 
 <p>
-https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html <br>
-<br> 
-In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services. <br>
-<br> 
-This lets you consolidate your routing rules into a single resource. For example, you might want to send requests to example.com/api/v1/ to an api-v1 service, and requests to example.com/api/v2/ to the api-v2 service. With an Ingress, you can easily set this up without creating a bunch of LoadBalancers or exposing each service on the Node. <br>
+https://console.bluemix.net/docs/containers/cs_ingress.html#opening_ingress_ports <br>
+https://console.bluemix.net/docs/containers/cs_troubleshoot_debug_ingress.html#cs_troubleshoot_debug_ingress <br>
+https://cloud.ibm.com/containers-kubernetes/solutions/helm-charts/ibm/ibmcloud-iks-debug
 </p>
 
 <p>
-NodePort and LoadBalancer let you expose a service by specifying that value in the service’s type. Ingress, on the other hand, is a completely independent resource to your service. You declare, create and destroy it separately to your services. <br.
-<br>
-This makes it decoupled and isolated from the services you want to expose. It also helps you to consolidate routing rules into one place.
 </p>
 
 <p>
-Start by creating the “mandatory” resources for Nginx Ingress in your cluster <br>
-<br>
-$ /home/tomwat/iks.sh <br>
-$ cd $HOME/skills/ingress <br>
-$ kubectl apply -f mandatory.yaml <br>
-$ kubectl apply -f cloud-generic.yaml <br>
-$ kubectl get pods -n ingress-nginx <br.
-<br>
-This has set up the Nginx Ingress Controller. Now, we can create Ingress resources in our Kubernetes cluster and route external requests to our services
 </p>
 
 <p>
-Create two services (in default domain) to demonstrate how the Ingress routes our request. We’ll run two web applications that output a slightly different response <br>
-$ kubectl apply -f apple.yaml <br>
-$ kubectl apply -f banana.yaml
-</p>
-
-<p>
-Now, declare an Ingress to route requests to /apple to the first service, and requests to /banana to second service. Check out the Ingress’ rules field that declares how requests are passed along <br>
-<br>
-$ curl -kL http://169.60.133.148/apple <br>
-curl: (7) Failed to connect to 169.60.133.148 port 80: Connection refused <br>
-<br>
-With the Ingress running on IBM Public Kubernetes Service, looks like I have some additional configuration TODO <br>
-https://console.bluemix.net/docs/containers/cs_ingress.html#ingress
-</p>
-
-<p>
-<img src="../images/ingress1-1.png" alt="ingress1-1" width="800" height="600">
-<img src="../images/ingress1-2.png" alt="ingress1-2" width="800" height="600">
-<img src="../images/ingress1-3.png" alt="ingress1-3" width="800" height="600">
-<img src="../images/ingress1-4.png" alt="ingress1-4" width="800" height="600">
-<img src="../images/ingress1-5.png" alt="ingress1-5" width="800" height="600">
-<img src="../images/ingress1-6.png" alt="ingress1-6" width="800" height="600">
-<img src="../images/ingress1-7.png" alt="ingress1-7" width="800" height="600">
-<img src="../images/ingress1-8.png" alt="ingress1-8" width="800" height="600">
+<img src="../images/ingress2-1.png" alt="ingress2-1" width="1000" height="600">
+<img src="../images/ingress2-2.png" alt="ingress2-2" width="800" height="600">
 </p>
 
 </body>
