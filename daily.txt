@@ -1,0 +1,8 @@
+$ cd $HOME/skills/website/website
+$ git status
+
+<shows any uncomitted changes> 
+
+$ git add --all
+$ git commit -m "commit msg"
+

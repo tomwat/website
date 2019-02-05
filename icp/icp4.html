@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>IBM Cloud Private - StoreFront MicroServices </h1>
+
+<p>
+https://www.ibm.com/cloud/garage/dte/tutorial/deploy-cloud-native-microservices-application-ibm-cloud-private <br>
+https://www.ibm.com/cloud/garage/tutorials/microservices-app-on-kubernetes <br>
+https://www.ibm.com/cloud/garage/architectures/microservices/1_0 <br>
+<br>
+The application is composed of several microservices. With microservices, an application can be partitioned into smaller independent services that communicate with each other. This structure allows for the application to be developed, deployed, and managed by different teams. When you implement microservices and incorporate the Circuit Breaker pattern, your application can remain partially operational even when one of the microservices is unavailable.
+</p>
+
+<p>
+Step 1 - Add Helm Repository that contains artifacts <br>
+https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce <br>
+sync repositories.
+</p>
+
+<p>
+Step 2 - Create a namespace (store) with pod security = ibm-anyuid-hostpath-psp <br>
+Note - ICP 3.1.1 includes more stringent security than previous versions
+</p>
+
+<p>
+Step 3 - Create a imagePolicy to allow images to be added to ICP repository <br>
+<br>
+docker.io/* and docker.elastic.co/* <br>
+Note - ICP 3.1.1 includes more stringent security than previous versions
+</p>
+
+<p>
+Step 4 - Find "bluecompute" in the catalog and Deploy v0.0.8 of the App <br>
+Note - the 0.0.9 verison (latest) has issue with elasticSearch in catalog
+</p>
+
+<p>
+Step 5 - validate <br>
+In the GUI, Helm releases - validate all pods are up and running <br>
+click the "Launch" button <br>
+click on "View Catalog"
+</p>
+
+<p>
+<img src="../images/icp4-1.png" alt="icp4.1" width="800" height="600">
+<img src="../images/icp4-2.png" alt="icp4.2" width="800" height="600">
+<img src="../images/icp4-3.png" alt="icp4.3" width="800" height="600">
+<img src="../images/icp4-4.png" alt="icp4.4" width="800" height="600">
+<img src="../images/icp4-5.png" alt="icp4.5" width="800" height="600">
+</p>
+
+</body>
+</html>
